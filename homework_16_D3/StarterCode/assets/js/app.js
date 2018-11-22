@@ -11,6 +11,8 @@ var margin = {
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
+var circRadius = 12
+
 // Create an SVG wrapper, append an SVG group that will hold our chart, and shift the latter by left and top margins.
 //console.log('got here')
 var svg = d3.select("#scatter")
@@ -25,6 +27,7 @@ var chartGroup = svg.append("g")
 d3.csv("data.csv")
   .then(function(hairData) {
     console.log('hairy: ',hairData);
+    hairData2 = hairData
 
     // Step 1: Parse Data/Cast as numbers
     // ==============================
@@ -65,9 +68,35 @@ d3.csv("data.csv")
     .append("circle")
     .attr("cx", d => xLinearScale(d.poverty))
     .attr("cy", d => yLinearScale(d.healthcare))
-    .attr("r", "10")
+    .attr("r", "12")
     .attr("fill", "pink")
     .attr("opacity", ".5");
+
+    var circlesGroup2 = chartGroup.selectAll("text")
+    .data(hairData2)
+    .enter()
+   // circlesGroup
+    .append("text")
+    .text(d => d.abbr)
+    .attr("dx", d => xLinearScale(d.poverty ) - 6 )
+    .attr("dy", d => yLinearScale(d.healthcare ) + circRadius / 2.5)
+    
+    .attr("fill", "black")
+    .attr("font-size",10);
+
+
+  // circlesGroup
+  //   .append("text")
+  //   // We return the abbreviation to .text, which makes the text the abbreviation.
+  //   .text(function(d) {
+  //     return d.abbr;
+  //   })
+  //      .attr("dx", d => xLinearScale(d.poverty ) )
+  //   .attr("dy", d => yLinearScale(d.healthcare ))
+    
+  //   .attr("fill", "black")
+  //   .attr("font-size",10);
+
 
     // Step 6: Initialize tool tip
     // ==============================
